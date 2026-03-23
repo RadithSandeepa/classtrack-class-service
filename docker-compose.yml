@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: class-service-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}      # injected from GitHub secret
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - "3307:3306"   # avoid conflict with user-service MySQL
+    volumes:
+      - class_db_data:/var/lib/mysql
+      - ./db-init:/docker-entrypoint-initdb.d   # optional SQL scripts
+
+  class-service:
+    build:
+      context: ./class-service
+      dockerfile: Dockerfile
+    container_name: class-service
+    restart: always
+    ports:
+      - "3002:3001"
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: ${DB_PASSWORD}   # from GitHub Secrets
+      DB_NAME: ${DB_NAME}           # from GitHub Secrets
+      DB_PORT: 3306
+      JWT_SECRET: ${JWT_SECRET}     # from GitHub Secrets
+    depends_on:
+      - mysql
+
+volumes:
+  class_db_data:
