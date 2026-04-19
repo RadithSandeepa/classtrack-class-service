@@ -4,8 +4,10 @@ import studentRoutes from './routes/studentRoutes.js';
 import subjectRoutes from './routes/subjectRoutes.js';
 import scheduleRoutes from './routes/scheduleRoutes.js';
 import attendanceRoutes from './routes/attendanceRoutes.js';
+import { swaggerDocs } from "./docs/swagger.js";
 
 const app = express();
+swaggerDocs(app);
 const PORT = process.env.PORT || 3000;
 
 // Middleware
