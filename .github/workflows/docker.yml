@@ -36,8 +36,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/class-service:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/class-service:v2 .
 
       - name: Push Docker image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/class-service:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/class-service:v2
