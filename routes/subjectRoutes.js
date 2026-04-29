@@ -22,6 +22,36 @@ router.use(authMiddleware);
  *     tags: [Subjects]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Mathematics"
+ *     responses:
+ *       201:
+ *         description: Subject created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Subject created
+ *                 subjectId:
+ *                   type: integer
+ *                   example: 3
+ *       403:
+ *         description: Forbidden (admin only)
+ *       500:
+ *         description: Server error
  */
 router.post('/', authMiddleware, requireRole(['admin']), controller.createSubject);
 
@@ -33,6 +63,22 @@ router.post('/', authMiddleware, requireRole(['admin']), controller.createSubjec
  *     tags: [Subjects]
  *     security:
  *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of subjects
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   name:
+ *                     type: string
+ *       500:
+ *         description: Server error
  */
 router.get('/', authMiddleware, controller.getSubjects);
 
